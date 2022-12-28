@@ -42,9 +42,10 @@ class AddTaskScreen extends StatelessWidget {
             TextButton(
               style: const ButtonStyle(
                   backgroundColor:
-                  MaterialStatePropertyAll(Colors.lightBlueAccent)),
+                      MaterialStatePropertyAll(Colors.lightBlueAccent)),
               onPressed: () {
-                Provider.of<TaskData>(context).addTask(newTaskTitle.toString());
+                Provider.of<TaskData>(context, listen: false)
+                    .addTask(newTaskTitle.toString());
                 Navigator.pop(context);
               },
               child: const Text(
