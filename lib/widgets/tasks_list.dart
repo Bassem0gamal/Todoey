@@ -8,7 +8,7 @@ class TasksList extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Consumer<TaskData>(
+    return Consumer<TaskState>(
       builder: (context, taskData, child) {
         return ListView.builder(
           itemBuilder: (context, index) {
