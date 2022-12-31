@@ -4,10 +4,11 @@ import 'package:provider/provider.dart';
 import 'package:todoey/models/task_data.dart';
 
 class AddTaskScreen extends StatelessWidget {
-  const AddTaskScreen({super.key});
+  AddTaskScreen({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final GlobalKey<FormState> _key = GlobalKey();
     String? newTaskTitle;
 
     return Container(
@@ -32,26 +33,44 @@ class AddTaskScreen extends StatelessWidget {
                 color: Colors.lightBlueAccent,
               ),
             ),
-            TextField(
-              autofocus: true,
-              textAlign: TextAlign.center,
-              onChanged: (newText) {
-                newTaskTitle = newText;
-              },
+            Form(
+              key: _key,
+              child: TextFormField(
+                validator: (value) {
+                  if (value == null || value.isEmpty) {
+                    return 'please enter your task';
+                  }
+                  return null;
+                },
+                autofocus: true,
+                textAlign: TextAlign.center,
+                onChanged: (newText) {
+                  newTaskTitle = newText;
+                },
+              ),
             ),
-            TextButton(
-              style: const ButtonStyle(
-                  backgroundColor:
-                      MaterialStatePropertyAll(Colors.lightBlueAccent)),
-              onPressed: () {
-                Provider.of<TaskData>(context, listen: false)
-                    .addTask(newTaskTitle.toString());
-                Navigator.pop(context);
-              },
-              child: const Text(
-                'Add',
-                style: TextStyle(
-                  color: Colors.white,
+            const SizedBox(
+              height: 12.0,
+            ),
+            SizedBox(
+              height: 48.0,
+              child: TextButton(
+                style: const ButtonStyle(
+                    backgroundColor:
+                        MaterialStatePropertyAll(Colors.lightBlueAccent)),
+                onPressed: () {
+                  if (_key.currentState!.validate()) {
+                    Provider.of<TaskData>(context, listen: false)
+                        .addTask(newTaskTitle.toString());
+
+                    Navigator.pop(context);
+                  }
+                },
+                child: const Text(
+                  'Add',
+                  style: TextStyle(
+                    color: Colors.white,
+                  ),
                 ),
               ),
             ),
